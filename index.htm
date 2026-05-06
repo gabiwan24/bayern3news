@@ -1,0 +1,156 @@
+```html
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BR3 Nachrichten - Eilmeldung</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Eigene Farben basierend auf dem Screenshot */
+        .bg-br-green-light { background-color: #b5d535; }
+        .bg-br-green-dark { background-color: #9ab92d; }
+        .text-br-green { color: #9ab92d; }
+        
+        /* Sanfter Schatten für Desktop-Ansicht, damit es wie ein Smartphone wirkt */
+        @media (min-width: 640px) {
+            body { background-color: #f3f4f6; display: flex; justify-content: center; padding-top: 2rem; }
+            .mobile-container { max-width: 414px; background-color: white; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); border-radius: 1rem; overflow: hidden; min-height: 800px; }
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 antialiased m-0 p-0">
+
+    <div class="mobile-container w-full h-screen sm:h-auto relative bg-white">
+        
+        <!-- Header -->
+        <header class="flex h-16 w-full border-b border-gray-200">
+            <!-- Logo Section -->
+            <div class="w-1/3 flex items-center justify-center bg-white">
+                <span class="text-4xl font-bold text-br-green tracking-tighter">BR3</span>
+            </div>
+            <!-- Action Icons Section -->
+            <div class="w-2/3 bg-br-green-light flex items-center justify-end px-4 gap-3">
+                <!-- Play Button (Startet das Audio) -->
+                <button onclick="toggleAudio()" id="mainPlayBtn" class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm active:scale-95 transition-transform" aria-label="Play Radio">
+                    <svg id="playIconSVG" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-800 ml-1" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                </button>
+                <!-- Webcam/Live Icon -->
+                <button class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3" />
+                        <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z" />
+                    </svg>
+                </button>
+                <!-- Hamburger Menu -->
+                <button class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Current Program Subheader -->
+        <div class="flex items-center p-4 border-b-2 border-black mx-4 mt-2 px-0 mb-4">
+            <div class="bg-br-green-dark w-12 h-12 flex items-center justify-center mr-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+                </svg>
+            </div>
+            <div>
+                <h2 class="font-bold text-lg leading-tight">Eilmeldung</h2>
+                <p class="text-gray-500 text-sm">Sonderausgabe</p>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="px-4 pb-8">
+            <!-- Article Image -->
+            <div class="w-full aspect-video bg-gray-200 mb-4 overflow-hidden relative">
+                <!-- Fallback Image: Polizeilicht / Safe -->
+                <img src="https://images.unsplash.com/photo-1555999015-4676572e9a66?auto=format&fit=crop&w=800&q=80" alt="Polizeieinsatz" class="w-full h-full object-cover">
+            </div>
+
+            <!-- Category -->
+            <p class="text-br-green font-semibold mb-1">Lokalnachrichten</p>
+
+            <!-- Headline -->
+            <h1 class="text-3xl font-bold leading-tight mb-4 text-black">
+                Glitzerphantom gefasst! Unbekannte Kinder-Detektive retten weltberühmten Diamanten
+            </h1>
+
+            <!-- Audio Player Element (Versteckt, wird über Buttons gesteuert, aber auch nativ verfügbar falls gewünscht) -->
+            <div class="mb-6 bg-gray-100 p-3 rounded-lg border border-gray-200">
+                <p class="text-xs text-gray-500 mb-2 font-bold uppercase tracking-wider">Meldung anhören:</p>
+                <audio id="newsAudio" controls class="w-full h-10">
+                    <source src="news.mp3" type="audio/mpeg">
+                    Dein Browser unterstützt das Audio-Element nicht.
+                </audio>
+            </div>
+
+            <!-- Meta Information -->
+            <div class="flex items-center text-gray-500 text-sm mb-4">
+                <button onclick="toggleAudio()" class="w-8 h-8 rounded-full border border-gray-400 flex items-center justify-center mr-2 hover:bg-gray-100 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                    </svg>
+                </button>
+                <div class="w-8 h-8 rounded-full border border-gray-400 flex items-center justify-center mr-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                </div>
+                <span class="border-l border-gray-400 pl-3">vor 12 Minuten</span>
+            </div>
+
+            <!-- Article Text -->
+            <article class="text-lg leading-relaxed text-gray-800 space-y-4">
+                <p>
+                    Das berüchtigte Glitzerphantom wurde heute Nachmittag von der Polizei festgenommen. Dabei konnte der weltberühmte Diamant, der "Große Stern von Afrika", sichergestellt und Privatdetektiv Inspektor Eduard Knobel wohlbehalten aus den Fängen des Phantoms befreit werden.
+                </p>
+                <p>
+                    Rätselhaft bleibt jedoch, wer den entscheidenden Hinweis geliefert hat. Ermittler sprechen von mysteriösen Spuren, die auf eine unbekannte Kinderdetektivbande hindeuten. Das Glitzerphantom soll bei seiner Verhaftung fassungslos gemurmelt haben: "Das waren doch nur Kinder." Inspektor Knobel ließ ausrichten, er sei unendlich stolz auf seine Lehrlinge.
+                </p>
+            </article>
+        </main>
+    </div>
+
+    <!-- JavaScript für die Audio-Steuerung -->
+    <script>
+        const audio = document.getElementById('newsAudio');
+        const playIconSVG = document.getElementById('playIconSVG');
+        
+        // SVG Pfade für Play und Pause
+        const playPath = "M8 5v14l11-7z";
+        const pausePath = "M6 19h4V5H6v14zm8-14v14h4V5h-4z";
+
+        function toggleAudio() {
+            if (audio.paused) {
+                audio.play();
+            } else {
+                audio.pause();
+            }
+        }
+
+        // Aktualisiere das Icon oben im Header basierend auf dem Audio-Status
+        audio.addEventListener('play', () => {
+            playIconSVG.innerHTML = `<path d="${pausePath}"/>`;
+        });
+
+        audio.addEventListener('pause', () => {
+            playIconSVG.innerHTML = `<path d="${playPath}"/>`;
+        });
+        
+        audio.addEventListener('ended', () => {
+            playIconSVG.innerHTML = `<path d="${playPath}"/>`;
+        });
+    </script>
+</body>
+</html>
+
+
+```
+
